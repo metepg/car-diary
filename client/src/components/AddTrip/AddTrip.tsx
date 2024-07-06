@@ -24,48 +24,19 @@ const formatDate = (date: Date): string => {
   return `${day}.${month}.${year}`;
 };
 
-const AddEvent = () => {
+const AddTrip = () => {
   const [rows] = useState<Row[]>([
     {id: 1, date: new Date(), area: 'Tikkurila-Helsinki', kilometers: 28},
     {id: 2, date: new Date(), area: 'Vantaa-Helsinki', kilometers: 34},
     {id: 3, date: new Date(), area: 'Helsinki-Vantaa', kilometers: 45},
   ]);
 
-  const [editRowId, setEditRowId] = useState<number | null>(null);
   const [editRowData, setEditRowData] = useState<EditRowData>(initialEditRowData);
-
-  const handleEditClick = (row: Row): void => {
-    setEditRowId(row.id);
-    setEditRowData({
-      id: row.id,
-      date: formatDate(row.date),
-      area: row.area,
-      kilometers: row.kilometers,
-    });
-  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const {name, value} = e.target;
     setEditRowData({...editRowData, [name]: value});
   };
-
-  // const handleSaveClick = (): void => {
-  //   if (editRowId !== null) {
-  //     const updatedRows = rows.map((row: Row) =>
-  //       row.id === editRowId
-  //         ? {
-  //           ...row,
-  //           ...editRowData,
-  //           date: new Date(`${new Date().getFullYear()}-${editRowData.date.split('.')[1]}-${editRowData.date.split('.')[0]}`),
-  //           kilometers: Number(editRowData.kilometers),
-  //         }
-  //         : row
-  //     );
-  //     setRows(updatedRows);
-  //     setEditRowId(null);
-  //     setEditRowData(initialEditRowData);
-  //   }
-  // };
 
   return (
     <TableContainer component={Paper}>
@@ -79,7 +50,7 @@ const AddEvent = () => {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.id} onClick={() => handleEditClick(row)} hover>
+            <TableRow key={row.id} hover>
               <TableCell style={{width: '33%'}}>
                 {editRowId === row.id ? (
                   <TextField
@@ -130,4 +101,4 @@ const AddEvent = () => {
   );
 };
 
-export default AddEvent;
+export default AddTrip;

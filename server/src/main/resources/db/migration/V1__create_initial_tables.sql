@@ -14,15 +14,17 @@ CREATE TABLE car.areas
     description TEXT
 );
 
-CREATE TABLE car.events
+CREATE TABLE car.trips
 (
-    id         SERIAL PRIMARY KEY,
-    kilometers INTEGER NOT NULL,
-    area_id    INTEGER REFERENCES car.areas (id),
-    start_ts   TIMESTAMP NOT NULL,
-    end_ts     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id               SERIAL PRIMARY KEY,
+    date             TIMESTAMP NOT NULL,
+    start_kilometers INTEGER   NOT NULL,
+    end_kilometers   INTEGER   NOT NULL,
+    area_id          INTEGER REFERENCES car.areas (id),
+    start_time       TIMESTAMP NOT NULL,
+    end_time         TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE VIEW car.total_amount_view AS
-SELECT SUM(kilometers) AS total_amount
-FROM car.events
+SELECT SUM(start_kilometers - trips.end_kilometers) AS total_amount
+FROM car.trips
