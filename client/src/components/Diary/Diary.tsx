@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TripData } from '../../models/TripData';
 import { fi } from 'date-fns/locale';
-import { fetchByDateRange } from '../../services/tripService.tsx';
+import { fetchAll, fetchByDateRange } from '../../services/tripService.tsx';
 
 const formatDate = (dateString: Date): string => {
   const date = new Date(dateString);
@@ -20,11 +20,17 @@ const Diary = () => {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [totalAmount, setTotalAmount] = useState<number | null>(null);
 
+  useEffect(() => {
+    (async () => {
+      const response = await fetchAll();
+      setRows(response);
+    })();
+  }, []);
+
   const handleSearch = async () => {
     if (startDate && endDate) {
       try {
         const response = await fetchByDateRange(startDate, endDate);
-        console.log(response)
         setRows(response);
 
         // Calculate the total amount

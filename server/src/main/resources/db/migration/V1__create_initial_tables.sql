@@ -25,7 +25,3 @@ CREATE TABLE car.trips
     start_time       TIMESTAMP NOT NULL,
     end_time         TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE VIEW car.total_amount_view AS
-SELECT SUM(start_kilometers - trips.end_kilometers) AS total_amount
-FROM car.trips
