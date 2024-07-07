@@ -7,7 +7,8 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-client/node_modules
+/client/node_modules
+/client/node*
 dist
 dist-ssr
 *.local
@@ -31,6 +32,7 @@ HELP.md
 *!.mvn/wrapper/maven-wrapper.jar
 *!**/src/main/**/target/
 *!**/src/test/**/target/
+server/src/main/resources/static
 
 ### STS ###
 .apt_generated
