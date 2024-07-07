@@ -7,15 +7,14 @@ import {
   Grid,
   Paper,
   Button,
-  Alert, MenuItem,
+  Alert, MenuItem, Snackbar,
 } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateField } from '@mui/x-date-pickers/DateField';
-import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { fi } from 'date-fns/locale';
 import { TripData } from '../../models/TripData.tsx';
 import { create } from '../../services/tripService.tsx';
+import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 
 const KilometerForm = () => {
   const initialFormData: TripData = {
@@ -26,6 +25,11 @@ const KilometerForm = () => {
     endTime: new Date(),
     area: '',
   };
+
+  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+
 
   const [formData, setFormData] = useState(() => {
     const savedData = localStorage.getItem('kilometerFormData');
@@ -41,7 +45,6 @@ const KilometerForm = () => {
     return initialFormData;
   });
 
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     localStorage.setItem('kilometerFormData', JSON.stringify(formData));
@@ -49,18 +52,31 @@ const KilometerForm = () => {
 
   const handleSaveClick = async (): Promise<void> => {
     if (!formData.startKilometers || !formData.endKilometers || !formData.date || !formData.startTime || !formData.endTime) {
-      setError('All fields are required.');
+      setError('Täytä kaikki kentät');
+      setOpen(true);
       return;
     }
 
+    // Remove spaces from numerical fields
+    const sanitizedFormData = {
+      ...formData,
+      startKilometers: formData.startKilometers.replace(/\s+/g, ''),
+      endKilometers: formData.endKilometers.replace(/\s+/g, ''),
+    };
+
     setError(null);
+    setSuccess(null);
+    setOpen(false);
 
     try {
-      await create(formData);
+      await create(sanitizedFormData);
       setFormData(initialFormData);
       localStorage.removeItem('kilometerFormData');
+      setSuccess('Tallennus onnistui!');
+      setOpen(true);
     } catch (err) {
-      setError('Failed to save data. Please try again.');
+      setError(`Tallennus epäonnistui... ${err}`);
+      setOpen(true);
     }
   };
 
@@ -90,12 +106,31 @@ const KilometerForm = () => {
         <Typography variant="h6" gutterBottom>
           Päivän kilometrit: {calculateTotalKilometers()} km
         </Typography>
-        {error && (
-          <Alert severity="error" sx={{mb: 2}}>
-            {error}
-          </Alert>
-        )}
         <Box component="form" noValidate autoComplete="off">
+          {success && (
+            <Snackbar
+              open={open}
+              autoHideDuration={1500}
+              onClose={() => setOpen(false)}
+              anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            >
+              <Alert onClose={() => setOpen(false)} severity="success">
+                {success}
+              </Alert>
+            </Snackbar>
+          )}
+          {error && (
+            <Snackbar
+              open={open}
+              autoHideDuration={2000}
+              onClose={() => setOpen(false)}
+              anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            >
+              <Alert onClose={() => setOpen(false)} severity="error">
+                {error}
+              </Alert>
+            </Snackbar>
+          )}
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -104,7 +139,7 @@ const KilometerForm = () => {
                 name="startKilometers"
                 value={formData.startKilometers}
                 onChange={handleInputChange}
-                type="text" // Change to text to allow spaces
+                type="text"
                 size="small"
               />
             </Grid>
@@ -115,7 +150,7 @@ const KilometerForm = () => {
                 name="endKilometers"
                 value={formData.endKilometers}
                 onChange={handleInputChange}
-                type="text" // Change to text to allow spaces
+                type="text"
                 size="small"
               />
             </Grid>
@@ -136,31 +171,28 @@ const KilometerForm = () => {
               </TextField>
             </Grid>
             <Grid item xs={12}>
-              <DateField
+              <DatePicker
                 label="Pvm"
                 value={formData.date}
                 onChange={(date) => handleDateChange(date, 'date')}
-                fullWidth
-                size="small"
-              />
+                format="dd/MM/yyyy"
+                slotProps={{
+                  textField: {fullWidth: true, size: 'small'},
+                }}/>
             </Grid>
             <Grid item xs={12}>
-              <TimeField
+              <TimePicker
                 label="Aloitusaika"
                 value={formData.startTime}
                 onChange={(date) => handleDateChange(date, 'startTime')}
-                fullWidth
-                size="small"
                 ampm={false}
               />
             </Grid>
             <Grid item xs={12}>
-              <TimeField
+              <TimePicker
                 label="Lopetusaika"
                 value={formData.endTime}
                 onChange={(date) => handleDateChange(date, 'endTime')}
-                fullWidth
-                size="small"
                 ampm={false}
               />
             </Grid>

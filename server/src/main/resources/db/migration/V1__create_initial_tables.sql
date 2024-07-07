@@ -11,7 +11,8 @@ CREATE TABLE car.users
 CREATE TABLE car.areas
 (
     id          SERIAL PRIMARY KEY,
-    description TEXT
+    description TEXT,
+    index       SMALLINT
 );
 
 CREATE TABLE car.trips
