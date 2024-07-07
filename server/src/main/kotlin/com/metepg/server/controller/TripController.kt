@@ -4,11 +4,15 @@ import com.metepg.server.model.Trip
 import com.metepg.server.service.TripService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import java.util.Date
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/trips")
 class TripController(@Autowired val tripService: TripService) {
 
@@ -30,8 +34,12 @@ class TripController(@Autowired val tripService: TripService) {
         }
     }
 
-    @GetMapping("/total")
-    fun getTotal(): ResponseEntity<Int> {
-        return ResponseEntity.ok(tripService.findTotalAmount())
+    @GetMapping("/range")
+    fun getTripsWithinDateRange(
+        @RequestParam("start_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) startDate: Date,
+        @RequestParam("end_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) endDate: Date
+    ): ResponseEntity<List<Trip>> {
+        val trips = tripService.findAllByDateBetween(startDate, endDate)
+        return ResponseEntity.ok(trips)
     }
 }

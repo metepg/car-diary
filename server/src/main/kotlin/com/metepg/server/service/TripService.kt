@@ -3,6 +3,7 @@ import com.metepg.server.model.Trip
 import com.metepg.server.repository.TripRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class TripService(@Autowired val tripRepository: TripRepository) {
@@ -15,7 +16,7 @@ class TripService(@Autowired val tripRepository: TripRepository) {
         return tripRepository.findAllByOrderByDate()
     }
 
-    fun findTotalAmount(): Int {
-        return tripRepository.findTotalAmount()
+    fun findAllByDateBetween(startDate: Date, endDate: Date): List<Trip> {
+        return tripRepository.findAllByDateBetween(startDate, endDate)
     }
 }

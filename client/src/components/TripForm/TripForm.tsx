@@ -14,7 +14,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { fi } from 'date-fns/locale';
 import { TripData } from '../../models/TripData.tsx';
 import { create } from '../../services/tripService.tsx';
-import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+import { DatePicker, TimeField  } from '@mui/x-date-pickers';
 import { Route } from '../../models/Route.tsx';
 import { getRoutes } from '../../services/routeService.tsx';
 
@@ -202,7 +202,7 @@ const TripForm = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TimePicker
+              <TimeField
                 label="Aloitusaika"
                 value={formData.startTime}
                 onChange={(date) => handleDateChange(date, 'startTime')}
@@ -210,7 +210,7 @@ const TripForm = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TimePicker
+              <TimeField
                 label="Lopetusaika"
                 value={formData.endTime}
                 onChange={(date) => handleDateChange(date, 'endTime')}

@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import axios from 'axios';
-import { TripData } from '../../models/TripData.tsx';
+import { useState } from 'react';
+import { Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { TripData } from '../../models/TripData';
+import { fi } from 'date-fns/locale';
+import { fetchByDateRange } from '../../services/tripService.tsx';
 
 const formatDate = (dateString: Date): string => {
   const date = new Date(dateString);
@@ -13,42 +16,87 @@ const formatDate = (dateString: Date): string => {
 
 const Diary = () => {
   const [rows, setRows] = useState<TripData[]>([]);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [totalAmount, setTotalAmount] = useState<number | null>(null);
 
-  useEffect(() => {
-    (async () => {
+  const handleSearch = async () => {
+    if (startDate && endDate) {
       try {
-        const response = await axios.get<TripData[]>('/api/trips');
-        console.log(response.data)
-        setRows(response.data);
+        const response = await fetchByDateRange(startDate, endDate);
+        console.log(response)
+        setRows(response);
+
+        // Calculate the total amount
+        const total = response.reduce((acc, trip) => acc + (+trip.endKilometers - +trip.startKilometers), 0);
+        setTotalAmount(total);
       } catch (error) {
         alert(`Virhe: ${error}`);
       }
-    })();
-  }, []);
-
-  if (!rows) return null;
+    }
+  };
 
   return (
-    <TableContainer component={Paper}>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell style={{ width: '30%' }}>PVM</TableCell>
-            <TableCell style={{ width: '25%' }}>ALUE</TableCell>
-            <TableCell style={{ width: '30%' }}>AJETTU</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id} hover>
-              <TableCell style={{ width: '30%' }}>{formatDate(row.date)}</TableCell>
-              <TableCell style={{ width: '25%' }}>{row.route}</TableCell>
-              <TableCell style={{ width: '30%' }}>{+row.endKilometers - +row.startKilometers} km</TableCell>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
+      <Paper sx={{ padding: 2, marginBottom: 2 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={5}>
+            <DatePicker
+              label="Aloituspäivämäärä"
+              value={startDate}
+              onChange={(date) => setStartDate(date)}
+              slotProps={{ textField: { fullWidth: true } }}
+            />
+          </Grid>
+          <Grid item xs={5}>
+            <DatePicker
+              label="Lopetuspäivämäärä"
+              value={endDate}
+              onChange={(date) => setEndDate(date)}
+              slotProps={{ textField: { fullWidth: true } }}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSearch}
+              fullWidth
+              sx={{ height: '100%' }}
+            >
+              Hae
+            </Button>
+          </Grid>
+        </Grid>
+      </Paper>
+
+      {totalAmount !== null && (
+        <Typography variant="h6" gutterBottom>
+          Kokonaiskilometrit: {totalAmount} km
+        </Typography>
+      )}
+
+      <TableContainer component={Paper}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ width: '30%' }}>PVM</TableCell>
+              <TableCell style={{ width: '25%' }}>ALUE</TableCell>
+              <TableCell style={{ width: '30%' }}>AJETTU</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow key={row.id} hover>
+                <TableCell style={{ width: '30%' }}>{formatDate(row.date)}</TableCell>
+                <TableCell style={{ width: '25%' }}>{row.route}</TableCell>
+                <TableCell style={{ width: '30%' }}>{+row.endKilometers - +row.startKilometers} km</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </LocalizationProvider>
   );
 };
 
