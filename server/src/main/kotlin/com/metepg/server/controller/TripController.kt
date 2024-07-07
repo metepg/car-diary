@@ -14,7 +14,11 @@ class TripController(@Autowired val tripService: TripService) {
 
     @GetMapping
     fun getAllTrips(): ResponseEntity<List<Trip>> {
-        return ResponseEntity.ok(null)
+        return try {
+            ResponseEntity.ok(tripService.findAllTrips())
+        } catch (e: Exception) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(emptyList())
+        }
     }
 
     @PostMapping("/create")
@@ -24,5 +28,10 @@ class TripController(@Autowired val tripService: TripService) {
         } catch (e: DataIntegrityViolationException) {
             ResponseEntity("Invalid Data", HttpStatus.BAD_REQUEST)
         }
+    }
+
+    @GetMapping("/total")
+    fun getTotal(): ResponseEntity<Int> {
+        return ResponseEntity.ok(tripService.findTotalAmount())
     }
 }

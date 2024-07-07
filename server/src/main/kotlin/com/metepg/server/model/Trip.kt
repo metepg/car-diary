@@ -7,12 +7,12 @@ import java.util.Date
 @Table(name = "trips", schema = "car")
 data class Trip(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 1,
+    val id: Int,
 
     val startKilometers: Int,
     val endKilometers: Int,
     val date: Date,
     val startTime: Date,
     val endTime: Date,
-    val areaId: Int
+    val route: String
 )

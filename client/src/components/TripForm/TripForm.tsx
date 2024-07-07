@@ -15,24 +15,26 @@ import { fi } from 'date-fns/locale';
 import { TripData } from '../../models/TripData.tsx';
 import { create } from '../../services/tripService.tsx';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+import { Route } from '../../models/Route.tsx';
+import { getRoutes } from '../../services/routeService.tsx';
 
-const KilometerForm = () => {
+const TripForm = () => {
   const initialFormData: TripData = {
     startKilometers: '',
     endKilometers: '',
     date: new Date(),
     startTime: null,
     endTime: new Date(),
-    area: '',
+    route: ''
   };
 
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-
+  const [routes, setRoutes] = useState<Route[]>([]);
 
   const [formData, setFormData] = useState(() => {
-    const savedData = localStorage.getItem('kilometerFormData');
+    const savedData = localStorage.getItem('tripFormData');
     if (savedData) {
       const parsedData = JSON.parse(savedData);
       return {
@@ -40,24 +42,37 @@ const KilometerForm = () => {
         date: new Date(parsedData.date),
         startTime: parsedData.startTime ? new Date(parsedData.startTime) : null,
         endTime: new Date(parsedData.endTime),
+        route: parsedData.route
       };
     }
     return initialFormData;
   });
 
-
   useEffect(() => {
-    localStorage.setItem('kilometerFormData', JSON.stringify(formData));
+    localStorage.setItem('tripFormData', JSON.stringify(formData));
   }, [formData]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const routes = await getRoutes();
+        if (routes) {
+          setRoutes(routes);
+        }
+      } catch (error) {
+        setError(`Failed to fetch routes: ${error}`);
+        setOpen(true);
+      }
+    })();
+  }, []);
+
   const handleSaveClick = async (): Promise<void> => {
-    if (!formData.startKilometers || !formData.endKilometers || !formData.date || !formData.startTime || !formData.endTime) {
+    if (!formData.startKilometers || !formData.endKilometers || !formData.date || !formData.startTime || !formData.endTime || !formData.route) {
       setError('Täytä kaikki kentät');
       setOpen(true);
       return;
     }
 
-    // Remove spaces from numerical fields
     const sanitizedFormData = {
       ...formData,
       startKilometers: formData.startKilometers.replace(/\s+/g, ''),
@@ -70,8 +85,11 @@ const KilometerForm = () => {
 
     try {
       await create(sanitizedFormData);
-      setFormData(initialFormData);
-      localStorage.removeItem('kilometerFormData');
+      setFormData({
+        ...initialFormData,
+        startKilometers: formatNumberWithSpaces(sanitizedFormData.endKilometers.toString()),
+      });
+      localStorage.removeItem('tripFormData');
       setSuccess('Tallennus onnistui!');
       setOpen(true);
     } catch (err) {
@@ -86,7 +104,7 @@ const KilometerForm = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const {name, value} = e.target;
-    const formattedValue = formatNumberWithSpaces(value.replace(/\s+/g, '')); // Remove existing spaces before formatting
+    const formattedValue = formatNumberWithSpaces(value.replace(/\s+/g, ''));
     setFormData({...formData, [name]: formattedValue});
   };
 
@@ -95,8 +113,9 @@ const KilometerForm = () => {
   };
 
   const calculateTotalKilometers = () => {
-    const start = parseFloat(formData.startKilometers.replace(/\s+/g, ''));
-    const end = parseFloat(formData.endKilometers.replace(/\s+/g, ''));
+    if (!formData || !formData.startKilometers || !formData.endKilometers) return 0;
+    const start = parseFloat(formData.startKilometers.toString().replace(/\s+/g, ''));
+    const end = parseFloat(formData.endKilometers.toString().replace(/\s+/g, ''));
     return isNaN(start) || isNaN(end) ? 0 : end - start;
   };
 
@@ -137,7 +156,7 @@ const KilometerForm = () => {
                 fullWidth
                 label="Aloitus kilometrit"
                 name="startKilometers"
-                value={formData.startKilometers}
+                value={formData.startKilometers || ''}
                 onChange={handleInputChange}
                 type="text"
                 size="small"
@@ -148,7 +167,7 @@ const KilometerForm = () => {
                 fullWidth
                 label="Lopetus kilometrit"
                 name="endKilometers"
-                value={formData.endKilometers}
+                value={formData.endKilometers || ''}
                 onChange={handleInputChange}
                 type="text"
                 size="small"
@@ -159,15 +178,16 @@ const KilometerForm = () => {
                 fullWidth
                 select
                 label="Alue"
-                name="area"
-                value={formData.area}
+                name="route"
+                value={formData.route || ''}
                 onChange={handleInputChange}
                 size="small"
               >
-                <MenuItem value="Vantaa-Helsinki">Vantaa-Helsinki</MenuItem>
-                <MenuItem value="Helsinki-Vantaa">Helsinki-Vantaa</MenuItem>
-                <MenuItem value="Helsinki-Espoo">Helsinki-Espoo</MenuItem>
-                <MenuItem value="Espoo-Helsinki">Espoo-Helsinki</MenuItem>
+                {routes.map((route) => (
+                  <MenuItem key={route.id} value={route.description}>
+                    {route.description}
+                  </MenuItem>
+                ))}
               </TextField>
             </Grid>
             <Grid item xs={12}>
@@ -178,7 +198,8 @@ const KilometerForm = () => {
                 format="dd/MM/yyyy"
                 slotProps={{
                   textField: {fullWidth: true, size: 'small'},
-                }}/>
+                }}
+              />
             </Grid>
             <Grid item xs={12}>
               <TimePicker
@@ -208,4 +229,4 @@ const KilometerForm = () => {
   );
 };
 
-export default KilometerForm;
+export default TripForm;

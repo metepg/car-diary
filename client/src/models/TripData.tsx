@@ -1,8 +1,9 @@
 export interface TripData {
-  startKilometers: string;
-  endKilometers: string;
+  id?: number;
+  startKilometers: number | string;
+  endKilometers: number | string;
   date: Date;
   startTime: Date | null;
   endTime: Date;
-  area: string;
+  route: string;
 }

@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import { AppBar, Toolbar, CssBaseline, Container, Box, IconButton } from '@mui/material';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import AddTrip from './components/AddTrip/AddTrip.tsx';
-import KilometerForm from './components/KilometerForm/KilometerForm.tsx';
+import Diary from './components/Diary/Diary.tsx';
+import TripForm from './components/TripForm/TripForm.tsx';
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
             <IconButton color="inherit" component={Link} to="/create">
               <DirectionsCarIcon />
             </IconButton>
-            <IconButton color="inherit" component={Link} to="/page2">
+            <IconButton color="inherit" component={Link} to="/diary">
               <ImportContactsIcon />
             </IconButton>
           </Box>
@@ -24,9 +24,9 @@ const App = () => {
       </AppBar>
       <Container>
         <Routes>
-          <Route path="/" element={<KilometerForm />} />
-          <Route path="/create" element={<KilometerForm />} />
-          <Route path="/diary" element={<AddTrip />} />
+          <Route path="/" element={<TripForm />} />
+          <Route path="/create" element={<TripForm />} />
+          <Route path="/diary" element={<Diary />} />
         </Routes>
       </Container>
     </Router>

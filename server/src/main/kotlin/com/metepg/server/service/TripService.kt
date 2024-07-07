@@ -10,4 +10,12 @@ class TripService(@Autowired val tripRepository: TripRepository) {
     fun createTrip(trip: Trip): Trip {
         return tripRepository.save(trip)
     }
+
+    fun findAllTrips(): List<Trip> {
+        return tripRepository.findAllByOrderByDate()
+    }
+
+    fun findTotalAmount(): Int {
+        return tripRepository.findTotalAmount()
+    }
 }

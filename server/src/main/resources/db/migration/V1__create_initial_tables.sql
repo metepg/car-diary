@@ -8,10 +8,10 @@ CREATE TABLE car.users
     role     TEXT
 );
 
-CREATE TABLE car.areas
+CREATE TABLE car.routes
 (
     id          SERIAL PRIMARY KEY,
-    description TEXT,
+    description TEXT UNIQUE,
     index       SMALLINT
 );
 
@@ -21,7 +21,7 @@ CREATE TABLE car.trips
     date             TIMESTAMP NOT NULL,
     start_kilometers INTEGER   NOT NULL,
     end_kilometers   INTEGER   NOT NULL,
-    area_id          INTEGER REFERENCES car.areas (id),
+    route            TEXT REFERENCES car.routes (description),
     start_time       TIMESTAMP NOT NULL,
     end_time         TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
