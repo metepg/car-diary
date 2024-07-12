@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import java.util.Date
+import java.util.*
 
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
@@ -31,6 +31,16 @@ class TripController(@Autowired val tripService: TripService) {
             ResponseEntity.ok(tripService.createTrip(trip))
         } catch (e: DataIntegrityViolationException) {
             ResponseEntity("Invalid Data", HttpStatus.BAD_REQUEST)
+        }
+    }
+
+    @GetMapping("/{id}")
+    fun getById(@PathVariable id: Int): ResponseEntity<Trip> {
+        val trip = tripService.findTripById(id)
+        return if (trip != null) {
+            ResponseEntity.ok(trip)
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
     }
 

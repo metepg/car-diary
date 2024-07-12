@@ -44,3 +44,15 @@ export const fetchByDateRange = async (startDate: Date, endDate: Date): Promise<
     throw error;
   }
 };
+
+export const fetchById = async (tripId: number): Promise<TripData> => {
+  try {
+    const response = await axios.get<TripData>(`${url}/${tripId}`);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response.data;
+    }
+    throw error;
+  }
+};

@@ -4,7 +4,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TripData } from '../../models/TripData';
 import { fi } from 'date-fns/locale';
-import { fetchAll, fetchByDateRange } from '../../services/tripService.tsx';
+import { fetchAll, fetchByDateRange, fetchById } from '../../services/tripService.tsx';
 
 const formatDate = (dateString: Date): string => {
   const date = new Date(dateString);
@@ -40,6 +40,12 @@ const Diary = () => {
         alert(`Virhe: ${error}`);
       }
     }
+  };
+
+  const handleRowClick = async (tripId: number | undefined) => {
+    if (!tripId) return;
+    const result = await fetchById(tripId);
+    console.log(result);
   };
 
   return (
@@ -92,11 +98,15 @@ const Diary = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id} hover>
-                <TableCell style={{ width: '30%' }}>{formatDate(row.date)}</TableCell>
-                <TableCell style={{ width: '25%' }}>{row.route}</TableCell>
-                <TableCell style={{ width: '30%' }}>{+row.endKilometers - +row.startKilometers} km</TableCell>
+            {rows.map((trip) => (
+              <TableRow
+                key={trip.id}
+                hover
+                onClick={() => handleRowClick(trip.id)}
+              >
+                <TableCell style={{ width: '30%' }}>{formatDate(trip.date)}</TableCell>
+                <TableCell style={{ width: '25%' }}>{trip.route}</TableCell>
+                <TableCell style={{ width: '30%' }}>{+trip.endKilometers - +trip.startKilometers} km</TableCell>
               </TableRow>
             ))}
           </TableBody>

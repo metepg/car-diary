@@ -17,6 +17,7 @@ import { create } from '../../services/tripService.tsx';
 import { DatePicker, TimeField  } from '@mui/x-date-pickers';
 import { Route } from '../../models/Route.tsx';
 import { getRoutes } from '../../services/routeService.tsx';
+import { NumericFormat } from 'react-number-format';
 
 const TripForm = () => {
   const initialFormData: TripData = {
@@ -41,7 +42,7 @@ const TripForm = () => {
         ...parsedData,
         date: new Date(parsedData.date),
         startTime: parsedData.startTime ? new Date(parsedData.startTime) : null,
-        endTime: new Date(parsedData.endTime),
+        endTime: new Date(),
         route: parsedData.route
       };
     }
@@ -104,8 +105,7 @@ const TripForm = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const {name, value} = e.target;
-    const formattedValue = formatNumberWithSpaces(value.replace(/\s+/g, ''));
-    setFormData({...formData, [name]: formattedValue});
+    setFormData({...formData, [name]: value});
   };
 
   const handleDateChange = (date: Date | null, field: string): void => {
@@ -152,25 +152,25 @@ const TripForm = () => {
           )}
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
+              <NumericFormat
                 fullWidth
                 label="Aloitus kilometrit"
                 name="startKilometers"
-                value={formData.startKilometers || ''}
+                customInput={TextField}
                 onChange={handleInputChange}
-                type="text"
-                size="small"
+                thousandSeparator=" "
+                value={formData.startKilometers || ''}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              <NumericFormat
                 fullWidth
                 label="Lopetus kilometrit"
                 name="endKilometers"
-                value={formData.endKilometers || ''}
+                customInput={TextField}
                 onChange={handleInputChange}
-                type="text"
-                size="small"
+                thousandSeparator=" "
+                value={formData.endKilometers || ''}
               />
             </Grid>
             <Grid item xs={12}>
