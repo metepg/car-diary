@@ -123,6 +123,7 @@ const TripForm: FC<TripFormProps> = ({tripData, onSave, onClose, routes, setTrip
             </Grid>
             <Grid item xs={12}>
               <TimeField
+                fullWidth
                 label="Aloitusaika"
                 value={tripData.startTime ? new Date(tripData.startTime) : null}
                 onChange={(date) => handleDateChange(date, 'startTime')}
@@ -131,6 +132,7 @@ const TripForm: FC<TripFormProps> = ({tripData, onSave, onClose, routes, setTrip
             </Grid>
             <Grid item xs={12}>
               <TimeField
+                fullWidth
                 label="Lopetusaika"
                 value={tripData.endTime ? new Date(tripData.endTime) : null}
                 onChange={(date) => handleDateChange(date, 'endTime')}
