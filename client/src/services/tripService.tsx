@@ -3,14 +3,19 @@ import { TripData } from '../models/TripData.tsx';
 
 const url = "/api/trips";
 
-export const create = async (formData: FormData) => {
+const handleAxiosError = (error: unknown): never => {
+  if (error instanceof AxiosError && error.response) {
+    throw error.response.data;
+  }
+  throw error;
+};
+
+export const create = async (formData: FormData): Promise<TripData> => {
   try {
-    const response = await axios.post(`${url}/create`, formData);
+    const response = await axios.post<TripData>(`${url}/create`, formData);
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError && error.response) {
-      throw error.response.data;
-    }
+    return handleAxiosError(error);
   }
 };
 
@@ -19,10 +24,7 @@ export const fetchAll = async (): Promise<TripData[]> => {
     const response = await axios.get<TripData[]>(`${url}`);
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError && error.response) {
-      throw error.response.data;
-    }
-    throw error;
+    return handleAxiosError(error);
   }
 };
 
@@ -38,10 +40,7 @@ export const fetchByDateRange = async (startDate: Date, endDate: Date): Promise<
     });
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError && error.response) {
-      throw error.response.data;
-    }
-    throw error;
+    return handleAxiosError(error);
   }
 };
 
@@ -50,9 +49,15 @@ export const fetchById = async (tripId: number): Promise<TripData> => {
     const response = await axios.get<TripData>(`${url}/${tripId}`);
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError && error.response) {
-      throw error.response.data;
-    }
-    throw error;
+    return handleAxiosError(error);
+  }
+};
+
+export const updateTrip = async (trip: TripData): Promise<TripData> => {
+  try {
+    const response = await axios.put<TripData>(`${url}`, trip);
+    return response.data;
+  } catch (error) {
+    return handleAxiosError(error);
   }
 };
