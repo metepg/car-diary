@@ -6,6 +6,7 @@ import { getRoutes } from '../../services/routeService';
 import TripForm from '../TripForm/TripForm.tsx';
 import { useSnackbar } from '../SnackBarContext/SnackBarContext.tsx';
 import { getRoutesFromLocalStorage, saveRoutesToLocalStorage } from '../../utils/localStorageUtils.ts';
+import { stripSpaces } from '../../utils/utils.ts';
 
 const initialTripData: TripData = {
   startKilometers: '',
@@ -58,10 +59,17 @@ const CreateTrip: React.FC = () => {
     try {
       if (!tripData) return;
 
-      await createTrip(tripData);
+      const sanitizedTripData = {
+        ...tripData,
+        startKilometers: stripSpaces(tripData.startKilometers.toString()),
+        endKilometers: stripSpaces(tripData.endKilometers.toString()),
+      };
+
+
+      await createTrip(sanitizedTripData);
       const newTripData = {
-        ...initialTripData,
-        startKilometers: tripData.endKilometers,
+        ...sanitizedTripData,
+        startKilometers: sanitizedTripData.endKilometers,
       };
 
       setTripData(newTripData);
