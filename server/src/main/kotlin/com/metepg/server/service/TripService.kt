@@ -20,6 +20,10 @@ class TripService(@Autowired val tripRepository: TripRepository) {
         return tripRepository.findById(id).orElse(null)
     }
 
+    fun updateTrip(updatedTrip: Trip): Trip {
+        return tripRepository.save(updatedTrip)
+    }
+
     fun findAllByDateBetween(startDate: Date, endDate: Date): List<Trip> {
         val calendar = Calendar.getInstance()
         calendar.time = endDate

@@ -44,6 +44,12 @@ class TripController(@Autowired val tripService: TripService) {
         }
     }
 
+    @PutMapping
+    fun updateTrip(@RequestBody updatedTrip: Trip): ResponseEntity<Trip> {
+        val trip = tripService.updateTrip(updatedTrip)
+        return ResponseEntity.ok(trip)
+    }
+
     @GetMapping("/range")
     fun getTripsWithinDateRange(
         @RequestParam("start_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) startDate: Date,

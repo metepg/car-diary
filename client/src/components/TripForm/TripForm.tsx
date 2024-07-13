@@ -154,6 +154,7 @@ const TripForm = () => {
             <Grid item xs={12}>
               <NumericFormat
                 fullWidth
+                type="tel"
                 label="Aloitus kilometrit"
                 name="startKilometers"
                 customInput={TextField}
@@ -165,6 +166,7 @@ const TripForm = () => {
             <Grid item xs={12}>
               <NumericFormat
                 fullWidth
+                type="tel"
                 label="Lopetus kilometrit"
                 name="endKilometers"
                 customInput={TextField}
