@@ -13,7 +13,7 @@ class TripService(@Autowired val tripRepository: TripRepository) {
     }
 
     fun findAllTrips(): List<Trip> {
-        return tripRepository.findAllByOrderByDate()
+        return tripRepository.findAllByOrderByDateDesc()
     }
 
     fun findTripById(id: Int): Trip? {
@@ -29,6 +29,6 @@ class TripService(@Autowired val tripRepository: TripRepository) {
         calendar.time = endDate
         calendar.add(Calendar.DAY_OF_YEAR, 1)
         val inclusiveEndDate = calendar.time
-        return tripRepository.findAllByDateBetween(startDate, inclusiveEndDate)
+        return tripRepository.findAllByDateBetweenOrderByDateDesc(startDate, inclusiveEndDate)
     }
 }

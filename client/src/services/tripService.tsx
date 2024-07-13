@@ -10,16 +10,16 @@ const handleAxiosError = (error: unknown): never => {
   throw error;
 };
 
-export const create = async (formData: FormData): Promise<TripData> => {
+export const createTrip = async (tripData: TripData): Promise<TripData> => {
   try {
-    const response = await axios.post<TripData>(`${url}/create`, formData);
+    const response = await axios.post<TripData>(`${url}/create`, tripData);
     return response.data;
   } catch (error) {
     return handleAxiosError(error);
   }
 };
 
-export const fetchAll = async (): Promise<TripData[]> => {
+export const fetchAllTrips = async (): Promise<TripData[]> => {
   try {
     const response = await axios.get<TripData[]>(`${url}`);
     return response.data;
@@ -28,7 +28,7 @@ export const fetchAll = async (): Promise<TripData[]> => {
   }
 };
 
-export const fetchByDateRange = async (startDate: Date, endDate: Date): Promise<TripData[]> => {
+export const fetchTripByDateRange = async (startDate: Date, endDate: Date): Promise<TripData[]> => {
   const localStartDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000));
   const localEndDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000));
   try {
@@ -44,7 +44,7 @@ export const fetchByDateRange = async (startDate: Date, endDate: Date): Promise<
   }
 };
 
-export const fetchById = async (tripId: number): Promise<TripData> => {
+export const fetchTripById = async (tripId: number): Promise<TripData> => {
   try {
     const response = await axios.get<TripData>(`${url}/${tripId}`);
     return response.data;

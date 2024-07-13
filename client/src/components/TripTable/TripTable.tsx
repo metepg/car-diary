@@ -9,6 +9,14 @@ interface TripTableProps {
 }
 
 const TripTable: React.FC<TripTableProps> = ({ rows, handleRowClick }) => {
+  const formatNumberWithSpaces = (number: number) => {
+    return new Intl.NumberFormat('fi-FI', {
+      useGrouping: true,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(number).replace(/,/g, ' ');
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table size="small">
@@ -25,7 +33,7 @@ const TripTable: React.FC<TripTableProps> = ({ rows, handleRowClick }) => {
               <TableCell style={{ width: '30%' }}>{formatDate(trip.date)}</TableCell>
               <TableCell style={{ width: '25%' }}>{trip.route}</TableCell>
               <TableCell style={{ width: '30%' }}>
-                {+trip.endKilometers - +trip.startKilometers} km
+                {formatNumberWithSpaces(+trip.endKilometers - +trip.startKilometers)} km
               </TableCell>
             </TableRow>
           ))}

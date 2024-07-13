@@ -3,7 +3,7 @@ export interface TripData {
   startKilometers: number | string;
   endKilometers: number | string;
   date: Date;
-  startTime: Date | null;
+  startTime?: Date | null;
   endTime: Date;
   route: string;
 }

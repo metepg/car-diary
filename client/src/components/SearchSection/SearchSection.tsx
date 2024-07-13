@@ -11,10 +11,10 @@ interface SearchSectionProps {
 }
 
 const SearchSection: FC<SearchSectionProps> = ({ startDate, setStartDate, endDate, setEndDate, handleSearch }) => (
-  <Grid container spacing={2}>
+  <Grid container spacing={1}>
     <Grid item xs={5}>
       <DatePicker
-        label="Aloituspäivämäärä"
+        label="Aloituspvm"
         value={startDate}
         onChange={(date) => setStartDate(date)}
         slotProps={{ textField: { fullWidth: true } }}
@@ -22,7 +22,7 @@ const SearchSection: FC<SearchSectionProps> = ({ startDate, setStartDate, endDat
     </Grid>
     <Grid item xs={5}>
       <DatePicker
-        label="Lopetuspäivämäärä"
+        label="Lopetuspvm"
         value={endDate}
         onChange={(date) => setEndDate(date)}
         slotProps={{ textField: { fullWidth: true } }}
@@ -33,7 +33,6 @@ const SearchSection: FC<SearchSectionProps> = ({ startDate, setStartDate, endDat
         variant="contained"
         color="primary"
         onClick={handleSearch}
-        fullWidth
         sx={{ height: '100%' }}
       >
         Hae
