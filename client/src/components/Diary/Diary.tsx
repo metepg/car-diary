@@ -4,12 +4,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TripData } from '../../models/TripData';
 import { fi } from 'date-fns/locale';
-import { fetchAllTrips, fetchTripByDateRange, fetchTripById, updateTrip } from '../../services/tripService';
+import { deleteTripById, fetchAllTrips, fetchTripByDateRange, fetchTripById, updateTrip } from '../../services/tripService';
 import EditTripModal from '../EditTripModal/EditTripModal';
 import { calculateTotalAmount, parseTotalAmountWithThousandSeparator, stripSpaces } from '../../utils/utils';
 import TripTable from '../TripTable/TripTable';
 import SearchSection from '../SearchSection/SearchSection';
 import { useSnackbar } from '../SnackBarContext/SnackBarContext.tsx';
+import { HttpStatusCode } from 'axios';
 
 const Diary = () => {
   const [rows, setRows] = useState<TripData[]>([]);
@@ -46,6 +47,23 @@ const Diary = () => {
     setSelectedTrip(tripData);
     setOpen(true);
   };
+
+  const handleDelete = async (tripId: number | undefined) => {
+    if (!tripId) return;
+
+    const shouldDelete = confirm("Haluatko poistaa tämän merkinnän ajopäiväkirjasta?");
+    if (!shouldDelete) return;
+
+    const response = await deleteTripById(tripId);
+
+    if (response.status === HttpStatusCode.Ok) {
+      setSuccess("Rivi poistettu")
+      setRows(rows.filter(trip => trip.id !== tripId))
+      handleClose();
+    } else {
+      setError("Virhe poistettaessa riviä");
+    }
+  }
 
   const handleClose = () => {
     setOpen(false);
@@ -95,7 +113,10 @@ const Diary = () => {
         </Typography>
       )}
 
-      <TripTable rows={rows} handleRowClick={handleRowClick}/>
+      <TripTable
+        rows={rows}
+        handleRowClick={handleRowClick}
+      />
 
       <EditTripModal
         open={open}
@@ -104,6 +125,7 @@ const Diary = () => {
         setError={setError}
         onSave={onSave}
         setSelectedTrip={setSelectedTrip}
+        handleDelete={handleDelete}
       />
     </LocalizationProvider>
   );

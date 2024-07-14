@@ -16,9 +16,10 @@ interface TripFormProps {
   onClose?: () => void;
   routes: Route[] | undefined;
   setError: (message: string | null) => void
+  handleDelete?: (tripId: number | undefined) => Promise<void>
 }
 
-const TripForm: FC<TripFormProps> = ({tripData, onSave, onClose, routes, setTripData, setError}) => {
+const TripForm: FC<TripFormProps> = ({tripData, onSave, routes, setTripData, setError, handleDelete}) => {
   if (!tripData) return null;
 
   const totalKilometers = calculateTotalKilometers(tripData);
@@ -144,8 +145,10 @@ const TripForm: FC<TripFormProps> = ({tripData, onSave, onClose, routes, setTrip
                 <Button variant="contained" color="primary" onClick={handleSaveClick}>
                   {tripData ? 'Tallenna' : 'Päivitä'}
                 </Button>
-                {!tripData?.id ? null : <Button variant="outlined" onClick={onClose}>
-                  Peruuta
+                {!tripData?.id
+                  ? null
+                  : <Button color="error" variant="contained" onClick={() => handleDelete?.(tripData.id)}>
+                  Poista
                 </Button>
                 }
               </Box>

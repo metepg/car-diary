@@ -58,4 +58,11 @@ class TripController(@Autowired val tripService: TripService) {
         val trips = tripService.findAllByDateBetween(startDate, endDate)
         return ResponseEntity.ok(trips)
     }
+
+    @DeleteMapping("/{tripId}")
+    fun deleteTripById(@PathVariable tripId: Int): ResponseEntity<Void> {
+        tripService.deleteTripById(tripId)
+        return ResponseEntity.ok().build()
+    }
+
 }

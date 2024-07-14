@@ -60,4 +60,13 @@ export const updateTrip = async (trip: TripData): Promise<TripData> => {
   } catch (error) {
     return handleAxiosError(error);
   }
+}
+
+export const deleteTripById = async (tripId: number): Promise<{ status: number, message: string }> => {
+  try {
+    const response = await axios.delete(`${url}/${tripId}`);
+    return { status: response.status, message: 'Rivi poistettu onnistuneesti.' };
+  } catch (error) {
+    return handleAxiosError(error);
+  }
 };

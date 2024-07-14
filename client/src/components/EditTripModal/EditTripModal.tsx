@@ -1,8 +1,9 @@
 import { Dispatch, FC, SetStateAction } from 'react';
-import { Modal, Box, Typography } from '@mui/material';
+import { Modal, Box, Typography, IconButton } from '@mui/material';
 import { TripData } from '../../models/TripData';
 import TripForm from '../TripForm/TripForm';
 import { getRoutesFromLocalStorage } from '../../utils/localStorageUtils.ts';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface EditTripModalProps {
   open: boolean;
@@ -11,9 +12,10 @@ interface EditTripModalProps {
   setError: (message: string | null) => void;
   onSave: () => Promise<void>;
   setSelectedTrip: Dispatch<SetStateAction<TripData | null>>;
+  handleDelete: (tripId: number | undefined) => Promise<void>
 }
 
-const EditTripModal: FC<EditTripModalProps> = ({ open, handleClose, selectedTrip, setError, onSave, setSelectedTrip }) => {
+const EditTripModal: FC<EditTripModalProps> = ({open, handleClose, selectedTrip, setError, onSave, setSelectedTrip, handleDelete}) => {
   if (!selectedTrip) return null;
 
   const routes = getRoutesFromLocalStorage();
@@ -30,11 +32,16 @@ const EditTripModal: FC<EditTripModalProps> = ({ open, handleClose, selectedTrip
         border: 'none',
         boxShadow: 24,
         p: 4,
-        outline: 'none'
+        outline: 'none',
       }}>
-        <Typography variant="h6" component="h2" gutterBottom>
-          Muokkaa
-        </Typography>
+        <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <Typography variant="h6" component="h2" gutterBottom>
+            Muokkaa
+          </Typography>
+          <IconButton onClick={handleClose}>
+            <CloseIcon/>
+          </IconButton>
+        </Box>
         <TripForm
           tripData={selectedTrip}
           onSave={onSave}
@@ -42,6 +49,7 @@ const EditTripModal: FC<EditTripModalProps> = ({ open, handleClose, selectedTrip
           routes={routes}
           setError={setError}
           setTripData={setSelectedTrip}
+          handleDelete={handleDelete}
         />
       </Box>
     </Modal>

@@ -31,4 +31,9 @@ class TripService(@Autowired val tripRepository: TripRepository) {
         val inclusiveEndDate = calendar.time
         return tripRepository.findAllByDateBetweenOrderByDateDesc(startDate, inclusiveEndDate)
     }
+
+    fun deleteTripById(tripId: Int) {
+        return tripRepository.deleteById(tripId);
+    }
+
 }
