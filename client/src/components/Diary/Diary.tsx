@@ -57,11 +57,11 @@ const Diary = () => {
     const response = await deleteTripById(tripId);
 
     if (response.status === HttpStatusCode.Ok) {
-      setSuccess("Rivi poistettu")
+      setSuccess("Merkintä poistettu")
       setRows(rows.filter(trip => trip.id !== tripId))
       handleClose();
     } else {
-      setError("Virhe poistettaessa riviä");
+      setError("Virhe poistettaessa merkintää");
     }
   }
 
