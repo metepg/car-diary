@@ -1,11 +1,17 @@
 package com.metepg.server.service
 import com.metepg.server.model.Trip
 import com.metepg.server.repository.TripRepository
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
-import java.util.*
+import java.time.LocalDate
 
 @Service
 class TripService(private val tripRepository: TripRepository) {
+
+    companion object {
+        val SORT_BY_DATE_DESC: Sort = Sort.by(Sort.Direction.DESC, "date")
+        val SORT_BY_DATE_ASC: Sort = Sort.by(Sort.Direction.ASC, "date")
+    }
 
     fun createTrip(trip: Trip): Trip {
         return tripRepository.save(trip)
@@ -23,12 +29,8 @@ class TripService(private val tripRepository: TripRepository) {
         return tripRepository.save(updatedTrip)
     }
 
-    fun findAllByDateBetween(startDate: Date, endDate: Date): List<Trip> {
-        val calendar = Calendar.getInstance()
-        calendar.time = endDate
-        calendar.add(Calendar.DAY_OF_YEAR, 1)
-        val inclusiveEndDate = calendar.time
-        return tripRepository.findAllByDateBetweenOrderByDateDesc(startDate, inclusiveEndDate)
+    fun findAllByDateBetween(startDate: LocalDate, endDate: LocalDate): List<Trip> {
+        return tripRepository.findAllByDateBetweenOrderByDateDesc(startDate, endDate)
     }
 
     fun deleteTripById(tripId: Int) {
@@ -36,10 +38,10 @@ class TripService(private val tripRepository: TripRepository) {
     }
 
     fun findTripsByDateDesc(year: Int, month: Int): List<Trip> {
-        return tripRepository.findAllByYearAndMonthDesc(year, month)
+        return tripRepository.findAllByYearAndMonth(year, month, SORT_BY_DATE_DESC)
     }
 
     fun findTripsByDateAsc(year: Int, month: Int): List<Trip> {
-        return tripRepository.findAllByYearAndMonthAsc(year, month)
+        return tripRepository.findAllByYearAndMonth(year, month, SORT_BY_DATE_ASC)
     }
 }
