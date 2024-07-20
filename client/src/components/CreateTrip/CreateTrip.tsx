@@ -78,7 +78,6 @@ const CreateTrip: React.FC = () => {
 
       setTripData(newTripData);
       setSuccess("Tallennus onnistui");
-      localStorage.removeItem('tripFormData');
     } catch (err) {
       setError(`Tallennus epäonnistui, ${err}`);
     }

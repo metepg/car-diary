@@ -61,7 +61,7 @@ class TripController(@Autowired val tripService: TripService) {
 
     @GetMapping("/date")
     fun getTripsByYearAndMonth(@RequestParam year: Int, @RequestParam month: Int): ResponseEntity<List<Trip>> {
-        val trips = tripService.findTripsByDate(year, month)
+        val trips = tripService.findTripsByDateDesc(year, month)
         return ResponseEntity.ok(trips)
     }
 
