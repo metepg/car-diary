@@ -16,7 +16,7 @@ import TripTable from '../TripTable/TripTable';
 import SearchSection from '../SearchSection/SearchSection';
 import { useSnackbar } from '../SnackBarContext/SnackBarContext.tsx';
 import { HttpStatusCode } from 'axios';
-import DownloadIcon from '@mui/icons-material/FileDownloadSharp';
+import DownloadIcon from '@mui/icons-material/DownloadForOfflineRounded';
 import { getTripsAsPDF } from '../../services/documentService.tsx';
 
 const Diary = () => {
@@ -119,7 +119,7 @@ const Diary = () => {
           </Grid>
           <Grid item>
             <IconButton onClick={handleDownload} aria-label="download">
-              <DownloadIcon/>
+              <DownloadIcon color="primary" fontSize="large" />
             </IconButton>
           </Grid>
         </Grid>
