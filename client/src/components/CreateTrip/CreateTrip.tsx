@@ -20,12 +20,13 @@ const initialTripData: TripData = {
 const CreateTrip: React.FC = () => {
   const {setSuccess, setError} = useSnackbar();
   const [tripData, setTripData] = useState<TripData | null>(() => {
+    const today = new Date();
     const savedData = localStorage.getItem('tripFormData');
     if (savedData) {
       const parsedData = JSON.parse(savedData);
       return {
         ...parsedData,
-        date: new Date(parsedData.date),
+        date: today,
         startTime: parsedData.startTime ? new Date(parsedData.startTime) : null,
         endTime: new Date(),
         route: parsedData.route
