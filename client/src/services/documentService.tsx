@@ -15,12 +15,16 @@ export const getTripsAsPDF = async (year: number, month: number): Promise<void> 
     const blob = new Blob([response.data], { type: 'application/pdf' });
     const blobURL = window.URL.createObjectURL(blob);
 
-    // Open the PDF in a new tab
-    window.open(blobURL, '_blank');
+    const link = document.createElement('a');
+    link.href = blobURL;
+    const formattedMonth = month.toString().padStart(2, '0');
+    link.download = `Kilometrit-${year}-${formattedMonth}.pdf`;
+
+    link.click();
 
     setTimeout(() => {
       window.URL.revokeObjectURL(blobURL);
-    }, 3600000);
+    }, 1800000);
 
   } catch (error) {
     if (error instanceof AxiosError && error.response) {

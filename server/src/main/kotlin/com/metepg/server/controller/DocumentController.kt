@@ -1,6 +1,7 @@
 package com.metepg.server.controller
 
 import com.metepg.server.service.DocumentService
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -19,6 +20,7 @@ class DocumentController(private val documentService: DocumentService) {
         val pdfBytes = documentService.generatePDF(year, month)
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_PDF)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Kilometrit-$year-$month.pdf")
             .body(pdfBytes)
     }
 }
