@@ -67,14 +67,18 @@ const CreateTrip: React.FC = () => {
 
 
       await createTrip(sanitizedTripData);
-      const newTripData = {
-        ...sanitizedTripData,
+      const newTripData: TripData = {
         startKilometers: sanitizedTripData.endKilometers,
+        startTime: null,
+        endTime: null,
+        endKilometers: '',
+        date: new Date(),
+        route: '',
       };
 
       setTripData(newTripData);
       setSuccess("Tallennus onnistui");
-      localStorage.setItem('tripFormData', JSON.stringify(newTripData));
+      localStorage.removeItem('tripFormData');
     } catch (err) {
       setError(`Tallennus epäonnistui, ${err}`);
     }

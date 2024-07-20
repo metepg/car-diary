@@ -1,21 +1,26 @@
 import { useEffect, useState } from 'react';
-import { Paper, Typography } from '@mui/material';
+import { Grid, IconButton, Paper, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TripData } from '../../models/TripData';
 import { fi } from 'date-fns/locale';
-import { deleteTripById, fetchAllTrips, fetchTripByDateRange, fetchTripById, updateTrip } from '../../services/tripService';
+import {
+  deleteTripById,
+  fetchTripById,
+  fetchTripsByMonth,
+  updateTrip
+} from '../../services/tripService';
 import EditTripModal from '../EditTripModal/EditTripModal';
 import { calculateTotalAmount, parseTotalAmountWithThousandSeparator, stripSpaces } from '../../utils/utils';
 import TripTable from '../TripTable/TripTable';
 import SearchSection from '../SearchSection/SearchSection';
 import { useSnackbar } from '../SnackBarContext/SnackBarContext.tsx';
 import { HttpStatusCode } from 'axios';
+import DownloadIcon from '@mui/icons-material/FileDownloadSharp';
+import { getTripsAsPDF } from '../../services/documentService.tsx';
 
 const Diary = () => {
   const [rows, setRows] = useState<TripData[]>([]);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
   const [totalAmount, setTotalAmount] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState<TripData | null>(null);
@@ -23,16 +28,19 @@ const Diary = () => {
 
   useEffect(() => {
     (async () => {
-      const tripData = await fetchAllTrips();
+      const year = new Date().getFullYear();
+      const month = new Date().getMonth() + 1;
+      const tripData = await fetchTripsByMonth(year, month);
       setRows(tripData);
       setTotalAmount(calculateTotalAmount(tripData));
+      console.log(await getTripsAsPDF());
     })();
   }, []);
 
-  const handleSearch = async () => {
-    if (startDate && endDate) {
+  const handleSearch = async (year: number, month: number) => {
+    if (year && month) {
       try {
-        const tripData = await fetchTripByDateRange(startDate, endDate);
+        const tripData = await fetchTripsByMonth(year, month)
         setRows(tripData);
         setTotalAmount(calculateTotalAmount(tripData));
       } catch (error) {
@@ -46,6 +54,10 @@ const Diary = () => {
     const tripData = await fetchTripById(tripId);
     setSelectedTrip(tripData);
     setOpen(true);
+  };
+
+  const handleDownload = async () => {
+    console.log("DOWNLOAD")
   };
 
   const handleDelete = async (tripId: number | undefined) => {
@@ -98,13 +110,16 @@ const Diary = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
       <Paper sx={{padding: 2, marginBottom: 2}}>
-        <SearchSection
-          startDate={startDate}
-          setStartDate={setStartDate}
-          endDate={endDate}
-          setEndDate={setEndDate}
-          handleSearch={handleSearch}
-        />
+        <Grid container alignItems="center" spacing={2}>
+          <Grid item xs>
+            <SearchSection handleSearch={handleSearch}/>
+          </Grid>
+          <Grid item>
+            <IconButton onClick={handleDownload} aria-label="download">
+              <DownloadIcon/>
+            </IconButton>
+          </Grid>
+        </Grid>
       </Paper>
 
       {totalAmount !== null && (

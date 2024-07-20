@@ -44,6 +44,22 @@ export const fetchTripByDateRange = async (startDate: Date, endDate: Date): Prom
   }
 };
 
+export const fetchTripsByMonth = async (year: number, month: number): Promise<TripData[]> => {
+  try {
+    const formattedMonth = month.toString().padStart(2, '0');
+
+    const response = await axios.get<TripData[]>(`${url}/date`, {
+      params: {
+        year: year,
+        month: formattedMonth,
+      }
+    })
+    return response.data;
+  } catch (error) {
+    return handleAxiosError(error);
+  }
+};
+
 export const fetchTripById = async (tripId: number): Promise<TripData> => {
   try {
     const response = await axios.get<TripData>(`${url}/${tripId}`);
