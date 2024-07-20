@@ -1,7 +1,8 @@
 package com.metepg.server.model
 
 import jakarta.persistence.*
-import java.util.Date
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "trips", schema = "car")
@@ -16,16 +17,13 @@ data class Trip(
     val endKilometers: Int,
 
     @Column(name = "date")
-    @Temporal(TemporalType.TIMESTAMP)
-    val date: Date,
+    val date: LocalDate,
 
     @Column(name = "start_time")
-    @Temporal(TemporalType.TIMESTAMP)
-    val startTime: Date,
+    val startTime: LocalDateTime,
 
     @Column(name = "end_time")
-    @Temporal(TemporalType.TIMESTAMP)
-    val endTime: Date,
+    val endTime: LocalDateTime,
 
     @Column(name = "route")
     val route: String
