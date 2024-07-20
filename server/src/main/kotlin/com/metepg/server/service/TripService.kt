@@ -35,7 +35,11 @@ class TripService(private val tripRepository: TripRepository) {
         return tripRepository.deleteById(tripId)
     }
 
-    fun findTripsByDate(year: Int, month: Int): List<Trip> {
-        return tripRepository.findAllByYearAndMonth(year, month)
+    fun findTripsByDateDesc(year: Int, month: Int): List<Trip> {
+        return tripRepository.findAllByYearAndMonthDesc(year, month)
+    }
+
+    fun findTripsByDateAsc(year: Int, month: Int): List<Trip> {
+        return tripRepository.findAllByYearAndMonthAsc(year, month)
     }
 }

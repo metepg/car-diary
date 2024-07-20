@@ -11,6 +11,8 @@ interface TripRepository : JpaRepository<Trip, Int> {
     fun findAllByDateBetweenOrderByDateDesc(startDate: Date, endDate: Date): List<Trip>
 
     @Query("SELECT t FROM Trip t WHERE EXTRACT(YEAR FROM t.date) = :year AND EXTRACT(MONTH FROM t.date) = :month ORDER BY t.date DESC")
-    fun findAllByYearAndMonth(@Param("year") year: Int, @Param("month") month: Int): List<Trip>
+    fun findAllByYearAndMonthDesc(@Param("year") year: Int, @Param("month") month: Int): List<Trip>
 
+    @Query("SELECT t FROM Trip t WHERE EXTRACT(YEAR FROM t.date) = :year AND EXTRACT(MONTH FROM t.date) = :month ORDER BY t.date")
+    fun findAllByYearAndMonthAsc(@Param("year") year: Int, @Param("month") month: Int): List<Trip>
 }

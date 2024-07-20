@@ -21,6 +21,8 @@ import { getTripsAsPDF } from '../../services/documentService.tsx';
 
 const Diary = () => {
   const [rows, setRows] = useState<TripData[]>([]);
+  const [year, setYear] = useState<number>(new Date().getFullYear());
+  const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
   const [totalAmount, setTotalAmount] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState<TripData | null>(null);
@@ -28,17 +30,18 @@ const Diary = () => {
 
   useEffect(() => {
     (async () => {
-      const year = new Date().getFullYear();
-      const month = new Date().getMonth() + 1;
-      const tripData = await fetchTripsByMonth(year, month);
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth() + 1;
+      const tripData = await fetchTripsByMonth(currentYear, currentMonth);
       setRows(tripData);
       setTotalAmount(calculateTotalAmount(tripData));
-      console.log(await getTripsAsPDF());
     })();
   }, []);
 
   const handleSearch = async (year: number, month: number) => {
     if (year && month) {
+      setYear(year)
+      setMonth(month)
       try {
         const tripData = await fetchTripsByMonth(year, month)
         setRows(tripData);
@@ -57,7 +60,7 @@ const Diary = () => {
   };
 
   const handleDownload = async () => {
-    console.log("DOWNLOAD")
+    await getTripsAsPDF(year, month);
   };
 
   const handleDelete = async (tripId: number | undefined) => {
