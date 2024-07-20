@@ -4,6 +4,6 @@ export interface TripData {
   endKilometers: number | string;
   date: Date;
   startTime?: Date | null;
-  endTime: Date;
+  endTime: Date | null;
   route: string;
 }

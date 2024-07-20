@@ -59,6 +59,12 @@ class TripController(@Autowired val tripService: TripService) {
         return ResponseEntity.ok(trips)
     }
 
+    @GetMapping("/date")
+    fun getTripsByYearAndMonth(@RequestParam year: Int, @RequestParam month: Int): ResponseEntity<List<Trip>> {
+        val trips = tripService.findTripsByDate(year, month)
+        return ResponseEntity.ok(trips)
+    }
+
     @DeleteMapping("/{tripId}")
     fun deleteTripById(@PathVariable tripId: Int): ResponseEntity<Void> {
         tripService.deleteTripById(tripId)
