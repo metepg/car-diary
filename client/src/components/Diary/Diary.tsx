@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Grid, IconButton, Paper, Typography } from '@mui/material';
+import { CircularProgress, Grid, IconButton, Paper, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TripData } from '../../models/TripData';
@@ -27,6 +27,7 @@ const Diary = () => {
   const [open, setOpen] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState<TripData | null>(null);
   const {setSuccess, setError} = useSnackbar();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -60,10 +61,13 @@ const Diary = () => {
   };
 
   const handleDownload = async () => {
+    setLoading(true);
     try {
       await getTripsAsPDF(year, month);
     } catch (error) {
       setError(`PDF error: ${error}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -122,10 +126,13 @@ const Diary = () => {
             <SearchSection handleSearch={handleSearch}/>
           </Grid>
           <Grid item>
-            <IconButton onClick={handleDownload} aria-label="download">
-              <DownloadIcon color="primary" fontSize="large" />
-            </IconButton>
-          </Grid>
+            {loading ? (
+              <CircularProgress/>
+            ) : (
+              <IconButton onClick={handleDownload} aria-label="download">
+                <DownloadIcon color="primary" fontSize="large"/>
+              </IconButton>
+            )}</Grid>
         </Grid>
       </Paper>
 
