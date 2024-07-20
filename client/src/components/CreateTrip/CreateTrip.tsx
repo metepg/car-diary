@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { TripData } from '../../models/TripData';
 import { createTrip } from '../../services/tripService';
 import { Route } from '../../models/Route';
@@ -17,7 +17,7 @@ const initialTripData: TripData = {
   route: ''
 };
 
-const CreateTrip: React.FC = () => {
+const CreateTrip: FC = () => {
   const {setSuccess, setError} = useSnackbar();
   const [tripData, setTripData] = useState<TripData | null>(() => {
     const today = new Date();

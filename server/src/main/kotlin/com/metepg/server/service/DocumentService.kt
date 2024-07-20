@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
 import java.text.DateFormatSymbols
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -18,7 +19,7 @@ class DocumentService(private val tripService: TripService) {
 
     companion object {
         val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-        val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+        val timeFormatter = SimpleDateFormat("HH:mm", Locale("fi"))
     }
 
     fun generatePDF(year: Int, month: Int): ByteArray {

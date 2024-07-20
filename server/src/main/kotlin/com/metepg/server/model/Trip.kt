@@ -2,7 +2,7 @@ package com.metepg.server.model
 
 import jakarta.persistence.*
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.util.Date
 
 @Entity
 @Table(name = "trips", schema = "car")
@@ -20,10 +20,10 @@ data class Trip(
     val date: LocalDate,
 
     @Column(name = "start_time")
-    val startTime: LocalDateTime,
+    val startTime: Date,
 
     @Column(name = "end_time")
-    val endTime: LocalDateTime,
+    val endTime: Date,
 
     @Column(name = "route")
     val route: String

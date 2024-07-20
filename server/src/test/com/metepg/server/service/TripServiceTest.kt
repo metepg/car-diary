@@ -6,16 +6,16 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
 import org.springframework.data.domain.Sort
+import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.Month
 import java.time.YearMonth
-
 class TripServiceTest {
 
     companion object {
         val SORT_BY_DATE_DESC: Sort = Sort.by(Sort.Direction.DESC, "date")
         val SORT_BY_DATE_ASC: Sort = Sort.by(Sort.Direction.ASC, "date")
+        val dateTimeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
     }
 
     private val tripRepository: TripRepository = mock(TripRepository::class.java)
@@ -26,8 +26,8 @@ class TripServiceTest {
         val trip1 = Trip(
             id = 1,
             date = LocalDate.of(2023, Month.JULY, 10),
-            startTime = LocalDateTime.of(2023, Month.JULY, 10, 10, 0),
-            endTime = LocalDateTime.of(2023, Month.JULY, 10, 11, 0),
+            startTime = dateTimeFormat.parse("2023-07-10T08:00:00"),
+            endTime = dateTimeFormat.parse("2023-07-10T09:00:00"),
             startKilometers = 100,
             endKilometers = 150,
             route = "Route 1"
@@ -35,8 +35,8 @@ class TripServiceTest {
         val trip2 = Trip(
             id = 2,
             date = LocalDate.of(2023, Month.JULY, 15),
-            startTime = LocalDateTime.of(2023, Month.JULY, 15, 12, 0),
-            endTime = LocalDateTime.of(2023, Month.JULY, 15, 13, 0),
+            startTime = dateTimeFormat.parse("2023-07-15T12:00:00"),
+            endTime = dateTimeFormat.parse("2023-07-15T13:00:00"),
             startKilometers = 200,
             endKilometers = 250,
             route = "Route 2"
@@ -59,8 +59,8 @@ class TripServiceTest {
         val trip1 = Trip(
             id = 1,
             date = LocalDate.of(2023, Month.JULY, 5),
-            startTime = LocalDateTime.of(2023, Month.JULY, 5, 8, 0),
-            endTime = LocalDateTime.of(2023, Month.JULY, 5, 9, 0),
+            startTime = dateTimeFormat.parse("2023-07-05T08:00:00"),
+            endTime = dateTimeFormat.parse("2023-07-05T09:00:00"),
             startKilometers = 100,
             endKilometers = 150,
             route = "Route 1"
@@ -68,8 +68,8 @@ class TripServiceTest {
         val trip2 = Trip(
             id = 2,
             date = LocalDate.of(2023, Month.JULY, 20),
-            startTime = LocalDateTime.of(2023, Month.JULY, 20, 14, 0),
-            endTime = LocalDateTime.of(2023, Month.JULY, 20, 15, 0),
+            startTime = dateTimeFormat.parse("2023-07-20T14:00:00"),
+            endTime = dateTimeFormat.parse("2023-07-20T15:00:00"),
             startKilometers = 200,
             endKilometers = 250,
             route = "Route 2"

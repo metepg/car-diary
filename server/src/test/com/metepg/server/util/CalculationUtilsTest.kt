@@ -3,11 +3,14 @@ package com.metepg.server.util
 import com.metepg.server.model.Trip
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.Month
-
 class CalculationUtilsTest {
+
+    companion object {
+        val dateTimeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+    }
 
     @Test
     fun `calculateTotalKilometers should return zero for empty list`() {
@@ -22,8 +25,8 @@ class CalculationUtilsTest {
             Trip(
                 id = 1,
                 date = LocalDate.of(2023, Month.JULY, 10),
-                startTime = LocalDateTime.of(2023, Month.JULY, 10, 10, 0),
-                endTime = LocalDateTime.of(2023, Month.JULY, 10, 11, 0),
+                startTime = dateTimeFormat.parse("2023-07-10T10:00:00"),
+                endTime = dateTimeFormat.parse("2023-07-10T11:00:00"),
                 startKilometers = 100,
                 endKilometers = 150,
                 route = "Route 1"
@@ -31,8 +34,8 @@ class CalculationUtilsTest {
             Trip(
                 id = 2,
                 date = LocalDate.of(2023, Month.JULY, 11),
-                startTime = LocalDateTime.of(2023, Month.JULY, 11, 12, 0),
-                endTime = LocalDateTime.of(2023, Month.JULY, 11, 13, 0),
+                startTime = dateTimeFormat.parse("2023-07-11T12:00:00"),
+                endTime = dateTimeFormat.parse("2023-07-11T13:00:00"),
                 startKilometers = 150,
                 endKilometers = 200,
                 route = "Route 2"
@@ -40,8 +43,8 @@ class CalculationUtilsTest {
             Trip(
                 id = 3,
                 date = LocalDate.of(2023, Month.JULY, 12),
-                startTime = LocalDateTime.of(2023, Month.JULY, 12, 14, 0),
-                endTime = LocalDateTime.of(2023, Month.JULY, 12, 15, 0),
+                startTime = dateTimeFormat.parse("2023-07-12T14:00:00"),
+                endTime = dateTimeFormat.parse("2023-07-12T15:00:00"),
                 startKilometers = 200,
                 endKilometers = 250,
                 route = "Route 3"
@@ -57,8 +60,8 @@ class CalculationUtilsTest {
             Trip(
                 id = 1,
                 date = LocalDate.of(2023, Month.JULY, 10),
-                startTime = LocalDateTime.of(2023, Month.JULY, 10, 10, 0),
-                endTime = LocalDateTime.of(2023, Month.JULY, 10, 11, 0),
+                startTime = dateTimeFormat.parse("2023-07-10T10:00:00"),
+                endTime = dateTimeFormat.parse("2023-07-10T11:00:00"),
                 startKilometers = 100,
                 endKilometers = 150,
                 route = "Route 1"
@@ -66,8 +69,8 @@ class CalculationUtilsTest {
             Trip(
                 id = 2,
                 date = LocalDate.of(2023, Month.JULY, 11),
-                startTime = LocalDateTime.of(2023, Month.JULY, 11, 12, 0),
-                endTime = LocalDateTime.of(2023, Month.JULY, 11, 13, 0),
+                startTime = dateTimeFormat.parse("2023-07-11T12:00:00"),
+                endTime = dateTimeFormat.parse("2023-07-11T13:00:00"),
                 startKilometers = 150,
                 endKilometers = 100,
                 route = "Route 2"
@@ -75,8 +78,8 @@ class CalculationUtilsTest {
             Trip(
                 id = 3,
                 date = LocalDate.of(2023, Month.JULY, 12),
-                startTime = LocalDateTime.of(2023, Month.JULY, 12, 14, 0),
-                endTime = LocalDateTime.of(2023, Month.JULY, 12, 15, 0),
+                startTime = dateTimeFormat.parse("2023-07-12T14:00:00"),
+                endTime = dateTimeFormat.parse("2023-07-12T15:00:00"),
                 startKilometers = 200,
                 endKilometers = 250,
                 route = "Route 3"
@@ -92,8 +95,8 @@ class CalculationUtilsTest {
             Trip(
                 id = 1,
                 date = LocalDate.of(2023, Month.JULY, 10),
-                startTime = LocalDateTime.of(2023, Month.JULY, 10, 10, 0),
-                endTime = LocalDateTime.of(2023, Month.JULY, 10, 11, 0),
+                startTime = dateTimeFormat.parse("2023-07-10T10:00:00"),
+                endTime = dateTimeFormat.parse("2023-07-10T11:00:00"),
                 startKilometers = 100,
                 endKilometers = 100,
                 route = "Route 1"
@@ -101,8 +104,8 @@ class CalculationUtilsTest {
             Trip(
                 id = 2,
                 date = LocalDate.of(2023, Month.JULY, 11),
-                startTime = LocalDateTime.of(2023, Month.JULY, 11, 12, 0),
-                endTime = LocalDateTime.of(2023, Month.JULY, 11, 13, 0),
+                startTime = dateTimeFormat.parse("2023-07-11T12:00:00"),
+                endTime = dateTimeFormat.parse("2023-07-11T13:00:00"),
                 startKilometers = 150,
                 endKilometers = 150,
                 route = "Route 2"
@@ -110,8 +113,8 @@ class CalculationUtilsTest {
             Trip(
                 id = 3,
                 date = LocalDate.of(2023, Month.JULY, 12),
-                startTime = LocalDateTime.of(2023, Month.JULY, 12, 14, 0),
-                endTime = LocalDateTime.of(2023, Month.JULY, 12, 15, 0),
+                startTime = dateTimeFormat.parse("2023-07-12T14:00:00"),
+                endTime = dateTimeFormat.parse("2023-07-12T15:00:00"),
                 startKilometers = 200,
                 endKilometers = 250,
                 route = "Route 3"
