@@ -5,15 +5,21 @@ import com.lowagie.text.pdf.PdfPCell
 import com.lowagie.text.pdf.PdfPTable
 import com.lowagie.text.pdf.PdfWriter
 import com.metepg.server.model.Trip
+import com.metepg.server.util.CalculationUtils
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
 import java.text.DateFormatSymbols
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Service
 class DocumentService(private val tripService: TripService) {
+
+    companion object {
+        val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    }
 
     fun generatePDF(year: Int, month: Int): ByteArray {
         val trips = this.tripService.findTripsByDateAsc(year, month)
@@ -35,10 +41,9 @@ class DocumentService(private val tripService: TripService) {
         val finnishMonthNames = DateFormatSymbols(Locale("fi")).months
 
         // Capitalize name
-        var monthName =
-            finnishMonthNames[month - 1].replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        var monthName = finnishMonthNames[month - 1].replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
-        // Monthname is e.g. 'Heinäkuuta' so remove last 2 letters and add year to end
+        // Month name is e.g. 'Heinäkuuta' so remove last 2 letters (ta) and add year to end
         monthName = monthName.substring(0, monthName.length - 2) + " $year"
 
         val monthNameParagraph = Paragraph(monthName, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14f)).apply {
@@ -49,7 +54,7 @@ class DocumentService(private val tripService: TripService) {
     }
 
     private fun addTotalKilometersParagraph(document: Document, trips: List<Trip>) {
-        val totalKilometers = trips.sumOf { it.endKilometers - it.startKilometers }
+        val totalKilometers = CalculationUtils.calculateTotalKilometers(trips)
         val totalKilometersText = "Yhteensä: $totalKilometers kilometriä"
 
         val headerParagraph = Paragraph(totalKilometersText, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14f)).apply {
@@ -68,12 +73,10 @@ class DocumentService(private val tripService: TripService) {
         val table = PdfPTable(columnWidths)
         table.widthPercentage = 100f
 
-        val headers = listOf("Pvm", "Alkanut", "Päättynyt", "Alkukilometrit", "Loppukilometrit", "Alue")
+        val headers = listOf("Päivämäärä", "Alkanut", "Päättynyt", "Alkukilometrit", "Loppukilometrit", "Alue")
         addTableHeaders(table, headers, boldFont)
 
-        val dateFormatter = SimpleDateFormat("dd.MM.yyyy")
-        val timeFormatter = SimpleDateFormat("HH:mm")
-        addTableRows(table, trips, dateFormatter, timeFormatter, numberFormat)
+        addTableRows(table, trips, numberFormat)
 
         document.add(table)
     }
@@ -92,8 +95,6 @@ class DocumentService(private val tripService: TripService) {
     private fun addTableRows(
         table: PdfPTable,
         trips: List<Trip>,
-        dateFormatter: SimpleDateFormat,
-        timeFormatter: SimpleDateFormat,
         numberFormat: NumberFormat
     ) {
         trips.forEach { trip ->

@@ -60,7 +60,11 @@ const Diary = () => {
   };
 
   const handleDownload = async () => {
-    await getTripsAsPDF(year, month);
+    try {
+      await getTripsAsPDF(year, month);
+    } catch (error) {
+      setError(`PDF error: ${error}`);
+    }
   };
 
   const handleDelete = async (tripId: number | undefined) => {

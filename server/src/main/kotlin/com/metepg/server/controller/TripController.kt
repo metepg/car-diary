@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import java.util.*
+import java.time.LocalDate
 
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
@@ -52,8 +52,8 @@ class TripController(@Autowired val tripService: TripService) {
 
     @GetMapping("/range")
     fun getTripsWithinDateRange(
-        @RequestParam("start_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) startDate: Date,
-        @RequestParam("end_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) endDate: Date
+        @RequestParam("start_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) startDate: LocalDate,
+        @RequestParam("end_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) endDate: LocalDate
     ): ResponseEntity<List<Trip>> {
         val trips = tripService.findAllByDateBetween(startDate, endDate)
         return ResponseEntity.ok(trips)

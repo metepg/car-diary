@@ -1,10 +1,10 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { TripData } from '../models/TripData.tsx';
 
 const url = "/api/trips";
 
 const handleAxiosError = (error: unknown): never => {
-  if (error instanceof AxiosError && error.response) {
+  if (axios.isAxiosError(error) && error.response) {
     throw error.response.data;
   }
   throw error;
