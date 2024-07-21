@@ -55,7 +55,7 @@ const TripForm: FC<TripFormProps> = ({tripData, onSave, routes, setTripData, set
       return false;
     }
     if (totalKilometers <= 0) {
-      setError("Ajettu matka ei voi olla 0 tai pienempi.")
+      setError("Matkan pituus ei voi olla 0 tai pienempi.")
       return false;
     }
 
@@ -66,7 +66,7 @@ const TripForm: FC<TripFormProps> = ({tripData, onSave, routes, setTripData, set
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fi}>
       <Container component={Paper} sx={{padding: 4, marginTop: 4}}>
         <Typography variant="h6" gutterBottom>
-          Ajettu matka: {totalKilometers} km
+          Matkan pituus: {totalKilometers} km
         </Typography>
         <Box component="form" noValidate autoComplete="off">
           <Grid container spacing={2}>
@@ -74,7 +74,7 @@ const TripForm: FC<TripFormProps> = ({tripData, onSave, routes, setTripData, set
               <NumericFormat
                 fullWidth
                 type="tel"
-                label="Aloitus kilometrit"
+                label="Alkukilometrit"
                 name="startKilometers"
                 customInput={TextField}
                 onChange={handleInputChange}
@@ -86,7 +86,7 @@ const TripForm: FC<TripFormProps> = ({tripData, onSave, routes, setTripData, set
               <NumericFormat
                 fullWidth
                 type="tel"
-                label="Lopetus kilometrit"
+                label="Loppukilometrit"
                 name="endKilometers"
                 customInput={TextField}
                 onChange={handleInputChange}
@@ -125,7 +125,7 @@ const TripForm: FC<TripFormProps> = ({tripData, onSave, routes, setTripData, set
             <Grid item xs={12}>
               <TimeField
                 fullWidth
-                label="Aloitusaika"
+                label="Alkanut"
                 value={tripData.startTime ? new Date(tripData.startTime) : null}
                 onChange={(date) => handleDateChange(date, 'startTime')}
                 ampm={false}
@@ -134,7 +134,7 @@ const TripForm: FC<TripFormProps> = ({tripData, onSave, routes, setTripData, set
             <Grid item xs={12}>
               <TimeField
                 fullWidth
-                label="Lopetusaika"
+                label="Päättynyt"
                 value={tripData.endTime ? new Date(tripData.endTime) : null}
                 onChange={(date) => handleDateChange(date, 'endTime')}
                 ampm={false}
