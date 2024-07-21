@@ -74,7 +74,7 @@ class DocumentService(private val tripService: TripService) {
         val table = PdfPTable(columnWidths)
         table.widthPercentage = 100f
 
-        val headers = listOf("Päivämäärä", "Alkanut", "Päättynyt", "Alkukilometrit", "Loppukilometrit", "Alue")
+        val headers = listOf("Päivämäärä", "Alkanut", "Päättynyt", "Alkukilometrit", "Loppukilometrit", "Matkan pituus")
         addTableHeaders(table, headers, boldFont)
 
         addTableRows(table, trips, numberFormat)
@@ -114,17 +114,17 @@ class DocumentService(private val tripService: TripService) {
                 paddingTop = 5f
                 paddingBottom = 5f
             })
-            table.addCell(PdfPCell(Phrase(numberFormat.format(trip.startKilometers))).apply {
+            table.addCell(PdfPCell(Phrase("${numberFormat.format(trip.startKilometers)} km")).apply {
                 horizontalAlignment = Element.ALIGN_CENTER
                 paddingTop = 5f
                 paddingBottom = 5f
             })
-            table.addCell(PdfPCell(Phrase(numberFormat.format(trip.endKilometers))).apply {
+            table.addCell(PdfPCell(Phrase("${numberFormat.format(trip.endKilometers)} km")).apply {
                 horizontalAlignment = Element.ALIGN_CENTER
                 paddingTop = 5f
                 paddingBottom = 5f
             })
-            table.addCell(PdfPCell(Phrase(trip.route)).apply {
+            table.addCell(PdfPCell(Phrase("${numberFormat.format(trip.endKilometers - trip.startKilometers)} km")).apply {
                 horizontalAlignment = Element.ALIGN_CENTER
                 paddingTop = 5f
                 paddingBottom = 5f
