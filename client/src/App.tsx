@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { createTheme, ThemeProvider, CssBaseline, AppBar, Toolbar, Box, IconButton, FormControlLabel, Switch, Container } from '@mui/material';
+import { createTheme, ThemeProvider, CssBaseline, AppBar, Toolbar, Box, IconButton, Switch, Container } from '@mui/material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import { SnackbarProvider } from './components/SnackBarContext/SnackBarContext.tsx';
 import Diary from './components/Diary/Diary.tsx';
 import CreateTrip from './components/CreateTrip/CreateTrip.tsx';
+import { ModeNight, Brightness7 } from '@mui/icons-material';
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -41,9 +42,12 @@ const App = () => {
                 <IconButton color="inherit" component={Link} to="/diary">
                   <ImportContactsIcon />
                 </IconButton>
-                <FormControlLabel
-                  control={<Switch checked={darkMode} onChange={handleThemeChange} color="default" />}
-                  label="Dark Mode"
+                <Switch
+                  checked={darkMode}
+                  onChange={handleThemeChange}
+                  color="default"
+                  icon={<Brightness7/>}
+                  checkedIcon={<ModeNight/>}
                 />
               </Box>
             </Toolbar>
