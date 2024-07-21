@@ -129,16 +129,19 @@ const Diary = () => {
             {loading ? (
               <CircularProgress/>
             ) : (
-              <IconButton onClick={handleDownload} aria-label="download">
-                <DownloadIcon color="primary" fontSize="large"/>
-              </IconButton>
-            )}</Grid>
+              rows.length > 0 && (
+                <IconButton onClick={handleDownload} aria-label="download">
+                  <DownloadIcon color="primary" fontSize="large"/>
+                </IconButton>
+              )
+            )}
+          </Grid>
         </Grid>
       </Paper>
 
       {totalAmount !== null && (
         <Typography variant="h6" gutterBottom>
-          Kokonaiskilometrit: {parseTotalAmountWithThousandSeparator(totalAmount)} km
+          Yhteensä: {parseTotalAmountWithThousandSeparator(totalAmount)} km
         </Typography>
       )}
 
