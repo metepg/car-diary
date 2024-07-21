@@ -37,22 +37,22 @@ A simple car diary application created for a friend. Feel free to use or modify.
    ```
 2. Build the project:
    ```bash
-   ./mvnw clean install
+   mvn clean install
    ```
-3. Run the application in dev profile:
-   ```bash
-   ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
-   ```
-4. Initialize demo data (optional, but recommended to ensure the local environment has at least one user available for login):
+3. Initialize demo data (optional, but recommended to ensure the local environment has at least one user available for login):
    ```bash
    ./init.sh
+   ```
+4. Run the application in dev profile:
+   ```bash
+   mvn spring-boot:run -Dspring-boot.run.profiles=dev
    ```
 
 ### Frontend
 After completing the backend setup, navigate to the frontend directory and start the development server:
-1. Navigate to the frontend directory:
+1. Navigate to the `/client` directory:
    ```bash
-   cd frontend
+   cd client
    ```
 2. Start the development server:
    ```bash
@@ -61,12 +61,12 @@ After completing the backend setup, navigate to the frontend directory and start
 
 ### Building the Application
 To build both the frontend and backend as a single `car.jar` file, run the following command:
-1. From the root directory of the project:
+1. From the `/server` directory of the project:
    ```bash
-   ./mvnw clean package
+   mvn clean package
    ```
 
-This will generate a `car.jar` file that can be deployed.
+This will generate a `car.jar` file in directory `/server/target/` that can be deployed.
 
 ### Database
 1. Set up the PostgreSQL database with the required schema.
