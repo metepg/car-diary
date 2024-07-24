@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
+
 class TripServiceTest {
 
     companion object {
@@ -30,7 +31,8 @@ class TripServiceTest {
             endTime = dateTimeFormat.parse("2023-07-10T09:00:00"),
             startKilometers = 100,
             endKilometers = 150,
-            route = "Route 1"
+            route = "Route 1",
+            deliveries = 10
         )
         val trip2 = Trip(
             id = 2,
@@ -39,7 +41,8 @@ class TripServiceTest {
             endTime = dateTimeFormat.parse("2023-07-15T13:00:00"),
             startKilometers = 200,
             endKilometers = 250,
-            route = "Route 2"
+            route = "Route 2",
+            deliveries = 15
         )
         val trips = listOf(trip1, trip2)
         `when`(tripRepository.findAllByYearAndMonth(2023, 7, SORT_BY_DATE_DESC)).thenReturn(trips)
@@ -63,7 +66,8 @@ class TripServiceTest {
             endTime = dateTimeFormat.parse("2023-07-05T09:00:00"),
             startKilometers = 100,
             endKilometers = 150,
-            route = "Route 1"
+            route = "Route 1",
+            deliveries = 8
         )
         val trip2 = Trip(
             id = 2,
@@ -72,7 +76,8 @@ class TripServiceTest {
             endTime = dateTimeFormat.parse("2023-07-20T15:00:00"),
             startKilometers = 200,
             endKilometers = 250,
-            route = "Route 2"
+            route = "Route 2",
+            deliveries = 12
         )
         val trips = listOf(trip1, trip2)
         `when`(tripRepository.findAllByYearAndMonth(2023, 7, SORT_BY_DATE_ASC)).thenReturn(trips)

@@ -21,6 +21,7 @@ $$
         trip_count  INT    := 0;
         start_time  TIMESTAMP;
         end_time    TIMESTAMP;
+        deliveries  INT;
     BEGIN
         WHILE trip_date <= CURRENT_DATE
             LOOP
@@ -40,9 +41,10 @@ $$
                     end_km := start_km + (50 + (RANDOM() * 150))::INT;
                     start_time := trip_date + TIME '08:00:00' + (RANDOM() * INTERVAL '2 hours');
                     end_time := start_time + (6 + (RANDOM() * 2)) * INTERVAL '1 hour';
+                    deliveries := 5 + (RANDOM() * 15)::INT;
 
-                    INSERT INTO car.trips (start_kilometers, end_kilometers, date, start_time, end_time, route)
-                    VALUES (start_km, end_km, trip_date, start_time, end_time, route_array[ceil(random() * 3)::int]);
+                    INSERT INTO car.trips (start_kilometers, end_kilometers, date, start_time, end_time, route, deliveries)
+                    VALUES (start_km, end_km, trip_date, start_time, end_time, route_array[ceil(random() * 3)::int], deliveries);
 
                     start_km := end_km;
                     trip_count := trip_count + 1;

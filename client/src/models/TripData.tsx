@@ -6,4 +6,5 @@ export interface TripData {
   startTime?: Date | null;
   endTime: Date | null;
   route: string;
+  deliveries: number | null;
 }

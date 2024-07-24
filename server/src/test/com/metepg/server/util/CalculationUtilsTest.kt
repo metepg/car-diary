@@ -29,7 +29,8 @@ class CalculationUtilsTest {
                 endTime = dateTimeFormat.parse("2023-07-10T11:00:00"),
                 startKilometers = 100,
                 endKilometers = 150,
-                route = "Route 1"
+                route = "Route 1",
+                deliveries = 10
             ),
             Trip(
                 id = 2,
@@ -38,7 +39,8 @@ class CalculationUtilsTest {
                 endTime = dateTimeFormat.parse("2023-07-11T13:00:00"),
                 startKilometers = 150,
                 endKilometers = 200,
-                route = "Route 2"
+                route = "Route 2",
+                deliveries = 12
             ),
             Trip(
                 id = 3,
@@ -47,7 +49,8 @@ class CalculationUtilsTest {
                 endTime = dateTimeFormat.parse("2023-07-12T15:00:00"),
                 startKilometers = 200,
                 endKilometers = 250,
-                route = "Route 3"
+                route = "Route 3",
+                deliveries = 15
             )
         )
         val result = CalculationUtils.calculateTotalKilometers(trips)
@@ -64,7 +67,8 @@ class CalculationUtilsTest {
                 endTime = dateTimeFormat.parse("2023-07-10T11:00:00"),
                 startKilometers = 100,
                 endKilometers = 150,
-                route = "Route 1"
+                route = "Route 1",
+                deliveries = 10
             ),
             Trip(
                 id = 2,
@@ -73,7 +77,8 @@ class CalculationUtilsTest {
                 endTime = dateTimeFormat.parse("2023-07-11T13:00:00"),
                 startKilometers = 150,
                 endKilometers = 100,
-                route = "Route 2"
+                route = "Route 2",
+                deliveries = 8
             ),
             Trip(
                 id = 3,
@@ -82,7 +87,8 @@ class CalculationUtilsTest {
                 endTime = dateTimeFormat.parse("2023-07-12T15:00:00"),
                 startKilometers = 200,
                 endKilometers = 250,
-                route = "Route 3"
+                route = "Route 3",
+                deliveries = 12
             )
         )
         val result = CalculationUtils.calculateTotalKilometers(trips)
@@ -99,7 +105,8 @@ class CalculationUtilsTest {
                 endTime = dateTimeFormat.parse("2023-07-10T11:00:00"),
                 startKilometers = 100,
                 endKilometers = 100,
-                route = "Route 1"
+                route = "Route 1",
+                deliveries = 10
             ),
             Trip(
                 id = 2,
@@ -108,7 +115,8 @@ class CalculationUtilsTest {
                 endTime = dateTimeFormat.parse("2023-07-11T13:00:00"),
                 startKilometers = 150,
                 endKilometers = 150,
-                route = "Route 2"
+                route = "Route 2",
+                deliveries = 12
             ),
             Trip(
                 id = 3,
@@ -117,7 +125,8 @@ class CalculationUtilsTest {
                 endTime = dateTimeFormat.parse("2023-07-12T15:00:00"),
                 startKilometers = 200,
                 endKilometers = 250,
-                route = "Route 3"
+                route = "Route 3",
+                deliveries = 15
             )
         )
         val result = CalculationUtils.calculateTotalKilometers(trips)

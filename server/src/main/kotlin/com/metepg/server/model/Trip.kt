@@ -26,5 +26,8 @@ data class Trip(
     val endTime: Date,
 
     @Column(name = "route")
-    val route: String
+    val route: String,
+
+    @Column(name = "deliveries")
+    val deliveries: Int
 )

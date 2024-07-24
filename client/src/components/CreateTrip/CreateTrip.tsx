@@ -14,7 +14,8 @@ const initialTripData: TripData = {
   date: new Date(),
   startTime: null,
   endTime: new Date(),
-  route: ''
+  route: '',
+  deliveries: null
 };
 
 const CreateTrip: FC = () => {
@@ -46,6 +47,18 @@ const CreateTrip: FC = () => {
           saveRoutesToLocalStorage(routes);
         }
         setRoutes(routes);
+
+        // Set default route
+        if (routes && routes.length > 0) {
+          setTripData((prevTripData) => {
+            if (!prevTripData) return null;
+            return {
+              ...prevTripData,
+              route: prevTripData.route || routes[0].description
+            };
+          });
+        }
+
       } catch (error) {
         alert(`Jotain meni pieleen: ${error}`);
       }
@@ -75,6 +88,7 @@ const CreateTrip: FC = () => {
         endKilometers: '',
         date: new Date(),
         route: '',
+        deliveries: null
       };
 
       setTripData(newTripData);

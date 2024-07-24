@@ -141,6 +141,18 @@ const TripForm: FC<TripFormProps> = ({tripData, onSave, routes, setTripData, set
               />
             </Grid>
             <Grid item xs={12}>
+              <TextField
+                fullWidth
+                type="number"
+                label="Keikkojen määrä"
+                name="numberPicker"
+                inputProps={{ min: 0, max: 20 }}
+                value={tripData.deliveries ?? ''}
+                onChange={(e) => setTripData({...tripData, deliveries: e.target.value ? parseInt(e.target.value) : null})}
+                size="small"
+              />
+            </Grid>
+            <Grid item xs={12}>
               <Box mt={2} display="flex" justifyContent="space-between">
                 <Button variant="contained" color="primary" onClick={handleSaveClick}>
                   {tripData ? 'Tallenna' : 'Päivitä'}
