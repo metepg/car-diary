@@ -5,7 +5,7 @@ import { Route } from '../../models/Route';
 import { getRoutes } from '../../services/routeService';
 import TripForm from '../TripForm/TripForm.tsx';
 import { useSnackbar } from '../SnackBarContext/SnackBarContext.tsx';
-import { getRoutesFromLocalStorage, saveRoutesToLocalStorage } from '../../utils/localStorageUtils.ts';
+import { saveRoutesToLocalStorage } from '../../utils/localStorageUtils.ts';
 import { stripSpaces } from '../../utils/utils.ts';
 
 const initialTripData: TripData = {
@@ -41,11 +41,8 @@ const CreateTrip: FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        let routes = getRoutesFromLocalStorage();
-        if (!routes) {
-          routes = await getRoutes();
-          saveRoutesToLocalStorage(routes);
-        }
+        const routes = await getRoutes();
+        saveRoutesToLocalStorage(routes);
         setRoutes(routes);
 
         // Set default route
