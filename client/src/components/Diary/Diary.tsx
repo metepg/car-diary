@@ -18,6 +18,7 @@ import { useSnackbar } from '../SnackBarContext/SnackBarContext.tsx';
 import { HttpStatusCode } from 'axios';
 import DownloadIcon from '@mui/icons-material/DownloadForOfflineRounded';
 import { getTripsAsPDF } from '../../services/documentService.tsx';
+import DataCalendar from '../DataCalendar/DataCalendar.tsx';
 
 const Diary = () => {
   const [rows, setRows] = useState<TripData[]>([]);
@@ -138,6 +139,12 @@ const Diary = () => {
           </Grid>
         </Grid>
       </Paper>
+
+      <DataCalendar
+        tripData={rows}
+        selectedMonth={month}
+        selectedYear={year}
+      />
 
       {totalAmount !== null && (
         <Typography variant="h6" gutterBottom>

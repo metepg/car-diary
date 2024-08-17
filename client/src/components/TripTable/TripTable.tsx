@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, useTheme } from '@mui/material';
 import { TripData } from '../../models/TripData.tsx';
 import { calculateDeliveriesPerHour, formatDate } from '../../utils/utils.ts';
 
@@ -9,6 +9,7 @@ interface TripTableProps {
 }
 
 const TripTable: React.FC<TripTableProps> = ({ rows, handleRowClick }) => {
+  const theme = useTheme();
   const formatNumberWithSpaces = (number: number) => {
     return new Intl.NumberFormat('fi-FI', {
       useGrouping: true,
@@ -42,11 +43,9 @@ const TripTable: React.FC<TripTableProps> = ({ rows, handleRowClick }) => {
                 <TableCell
                   style={{
                     width: '35%',
-                    color: parseFloat(deliveriesPerHour) <= 2
-                      ? 'red'
-                      : parseFloat(deliveriesPerHour) >= 2.5
-                        ? 'green'
-                        : 'inherit',
+                    color: parseFloat(deliveriesPerHour) >= 2
+                      ? theme.palette.success.light
+                      : theme.palette.error.light
                   }}
                 >
                   {deliveriesPerHour}
