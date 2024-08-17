@@ -40,3 +40,18 @@ export const parseTotalAmountWithThousandSeparator = (amount: number): string =>
     maximumFractionDigits: 0,
   }).format(amount).replace(/,/g, ' ');
 };
+
+export const calculateDeliveriesPerHour = (trip: TripData): string => {
+  if (!trip.startTime || !trip.endTime) throw new Error("startTime and endTime must be defined");
+
+  const start = new Date(trip.startTime);
+  const end = new Date(trip.endTime);
+
+  const startTotalMinutes = start.getHours() * 60 + start.getMinutes();
+  const endTotalMinutes = end.getHours() * 60 + end.getMinutes();
+  const differenceInHours = (endTotalMinutes - startTotalMinutes) / 60;
+
+  if (!trip.deliveries || differenceInHours === 0) return "0.00"
+
+  return (trip.deliveries / differenceInHours).toFixed(2);
+}

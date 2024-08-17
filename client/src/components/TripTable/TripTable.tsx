@@ -1,7 +1,7 @@
 import React from 'react';
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
 import { TripData } from '../../models/TripData.tsx';
-import { formatDate } from '../../utils/utils.ts';
+import { calculateDeliveriesPerHour, formatDate } from '../../utils/utils.ts';
 
 interface TripTableProps {
   rows: TripData[];
@@ -22,21 +22,38 @@ const TripTable: React.FC<TripTableProps> = ({ rows, handleRowClick }) => {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell style={{ width: '30%' }}>PVM</TableCell>
-            <TableCell style={{ width: '25%' }}>ALUE</TableCell>
+            <TableCell style={{ width: '15%' }}>PVM</TableCell>
+            <TableCell style={{ width: '20%' }}>ALUE</TableCell>
             <TableCell style={{ width: '30%' }}>AJETTU</TableCell>
+            <TableCell style={{ width: '35%' }}>KEIKAT</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((trip) => (
-            <TableRow key={trip.id} hover onClick={() => handleRowClick(trip.id)}>
-              <TableCell style={{ width: '30%' }}>{formatDate(trip.date)}</TableCell>
-              <TableCell style={{ width: '25%' }}>{trip.route}</TableCell>
-              <TableCell style={{ width: '30%' }}>
-                {formatNumberWithSpaces(+trip.endKilometers - +trip.startKilometers)} km
-              </TableCell>
-            </TableRow>
-          ))}
+          {rows.map((trip) => {
+            const deliveriesPerHour = calculateDeliveriesPerHour(trip);
+
+            return (
+              <TableRow key={trip.id} hover onClick={() => handleRowClick(trip.id)}>
+                <TableCell style={{ width: '15%' }}>{formatDate(trip.date)}</TableCell>
+                <TableCell style={{ width: '20%' }}>{trip.route}</TableCell>
+                <TableCell style={{ width: '20%' }}>
+                  {formatNumberWithSpaces(+trip.endKilometers - +trip.startKilometers)} km
+                </TableCell>
+                <TableCell
+                  style={{
+                    width: '35%',
+                    color: parseFloat(deliveriesPerHour) <= 2
+                      ? 'red'
+                      : parseFloat(deliveriesPerHour) >= 2.5
+                        ? 'green'
+                        : 'inherit',
+                  }}
+                >
+                  {deliveriesPerHour}
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
